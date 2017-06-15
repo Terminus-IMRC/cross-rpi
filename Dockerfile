@@ -17,11 +17,12 @@ RUN mkdir -p "$HOME/.local/src"
 RUN sudo chown imrc:imrc -R $HOME
 
 WORKDIR $HOME/.local/src
-RUN git clone --depth=1 https://github.com/crosstool-ng/crosstool-ng
-WORKDIR crosstool-ng
-RUN autoreconf -i -m
+RUN wget --progress=dot \
+         'https://github.com/crosstool-ng/crosstool-ng/archive/crosstool-ng-1.23.0.tar.gz'
+RUN tar xzf crosstool-ng-1.23.0.tar.gz
+WORKDIR crosstool-ng-crosstool-ng-1.23.0
+RUN ./bootstrap
 RUN ./configure --prefix="$HOME/.local"
-RUN maintainer/gen-kconfig.sh
 RUN make
 RUN make install
 
